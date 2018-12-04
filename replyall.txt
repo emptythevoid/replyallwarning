@@ -1,0 +1,27 @@
+Dim WithEvents insp As Outlook.Inspectors
+Dim WithEvents mailItem As Outlook.mailItem
+
+' This is called on Outlook startup
+Private Sub Application_Startup()
+    Set insp = Application.Inspectors
+End Sub
+
+' This is called when a new Inspector is created.
+Private Sub insp_NewInspector(ByVal Inspector As Inspector)
+    If Inspector.CurrentItem.Class = olMail Then
+       Set mailItem = Inspector.CurrentItem
+    End If
+End Sub
+
+' Called when you press Reply
+Private Sub mailItem_ReplyAll(ByVal Response As Object, Cancel As Boolean)
+    Dim msg As String
+    Dim result As Integer
+    ' If myMailItem.Recipients.Count > 0 Then
+        msg = "Do you really want to Reply To All?"
+       result = MsgBox(msg, vbYesNo, "Reply Check")
+       If result = vbNo Then
+            Cancel = True
+        End If
+    ' End If
+End Sub
